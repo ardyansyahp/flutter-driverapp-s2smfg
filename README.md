@@ -1,112 +1,96 @@
-﻿# flutter-driverapp-s2smfg
+<div align="center">
+  <h1>🚚 S2SMFG Logistics & Driver App</h1>
+  <p><strong>A high-performance Android mobile application for real-time fleet tracking, delivery management, and secure logistics operations.</strong></p>
 
-Aplikasi Android (Flutter) untuk **Driver S2SMFG** — digunakan oleh supir/driver untuk mengelola pengiriman, scan truk, dan tracking pengiriman secara real-time.
+  [![Flutter Version](https://img.shields.io/badge/Flutter-3.11+-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
+  [![Dart Version](https://img.shields.io/badge/Dart-3.11+-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev)
+  [![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://android.com)
+  [![Architecture](https://img.shields.io/badge/Architecture-GetX-FF7A59?style=for-the-badge)](https://pub.dev/packages/get)
+</div>
 
----
+<br/>
 
-## Deskripsi
+## 📖 Overview
 
-Aplikasi mobile native Flutter yang berkomunikasi langsung dengan backend API S2SMFG. Driver dapat login, melihat daftar delivery plan, melakukan scan QR truk, mencatat kedatangan, dan melaporkan insiden perjalanan.
+The **S2SMFG Driver App** is a native Flutter application engineered to serve as the critical mobile touchpoint for the S2SMFG manufacturing logistics network. It empowers drivers with real-time delivery manifests, secure biometric/QR authentication, and active shipment tracking—seamlessly syncing field data directly back to the centralized Laravel backend via a robust REST API.
 
-### Arsitektur
+## ✨ Core Features
 
-```
-Flutter App (Android)
-    ↓  REST API (HTTPS)
-Backend Laravel S2SMFG (s2smfg.biz.id)
-    ↓
-Database MySQL
-```
+* **🔐 Secure Authentication**: Multi-modal login supporting standard credentials or high-speed badge QR code scanning. Utilizes `flutter_secure_storage` for encrypted token management.
+* **📦 Intelligent Delivery Plans**: Dynamic daily manifests detailing routes, priorities, and cargo specifics.
+* **📷 Hardware-Accelerated Scanning**: Integrated `mobile_scanner` for lightning-fast truck QR verification, ensuring the right cargo is on the right vehicle.
+* **📍 Active Trip Telemetry**: Real-time tracking of active deliveries from dispatch to destination arrival.
+* **🚨 Incident Reporting**: In-app capability to report transit anomalies, equipped with camera integration (`image_picker`) for immediate photographic evidence.
 
----
+## 🏗️ System Architecture
 
-## Fitur
-
-- ✅ **Login** — autentikasi dengan username/password atau QR badge scan
-- ✅ **Delivery Plan** — melihat daftar rencana pengiriman hari ini
-- ✅ **Scan Truk** — scan QR code truk untuk memulai perjalanan
-- ✅ **Active Delivery** — tracking pengiriman yang sedang berjalan
-- ✅ **Arrival** — konfirmasi kedatangan di titik tujuan
-- ✅ **Incident Report** — melaporkan insiden selama perjalanan
-- ✅ **Secure Storage** — token login tersimpan aman di device
-
----
-
-## Prasyarat
-
-- Flutter SDK ≥ 3.11.0 / Dart SDK ^3.11.0
-- Android device (minSdk 21)
-- Koneksi internet ke server S2SMFG
-- Akun driver yang sudah terdaftar di sistem S2SMFG
-
----
-
-## Dependensi Utama
-
-| Package | Versi | Kegunaan |
-|---------|-------|----------|
-| `get` | ^4.6.6 | State management + navigation (GetX) |
-| `dio` | ^5.7.0 | HTTP client untuk API calls |
-| `flutter_secure_storage` | ^9.2.2 | Penyimpanan token login yang aman |
-| `mobile_scanner` | ^5.2.3 | QR Code scanner (truk & badge login) |
-| `image_picker` | ^1.1.2 | Kamera untuk foto bukti pengiriman |
-| `intl` | ^0.19.0 | Format tanggal & waktu |
-
----
-
-## Struktur Folder
-
-```
-lib/
-├── main.dart                     # Entry point app
-└── app/
-    ├── constants/
-    │   └── api_constants.dart    # Base URL API & endpoint names
-    ├── controllers/              # GetX controllers
-    │   ├── auth_controller.dart
-    │   ├── delivery_controller.dart
-    │   └── shipping_controller.dart
-    ├── models/                   # Data models
-    │   ├── user_model.dart
-    │   ├── delivery_model.dart
-    │   └── shipping_model.dart
-    ├── routes/
-    │   └── app_routes.dart       # Definisi routing halaman
-    ├── services/
-    │   ├── api_service.dart      # HTTP client (Dio wrapper)
-    │   └── auth_service.dart     # Login & token management
-    └── views/                    # Halaman UI
-        ├── auth/
-        ├── delivery/
-        └── widgets/
+```mermaid
+sequenceDiagram
+    participant Driver as Driver App (Android)
+    participant API as S2SMFG REST API
+    participant DB as Main Database
+    
+    Driver->>API: Authenticate (Credentials/QR)
+    API-->>Driver: Encrypted JWT Token
+    Driver->>API: Fetch Delivery Manifest
+    API->>DB: Query Active Routes
+    DB-->>API: Route Data
+    API-->>Driver: JSON Payload
+    Driver->>API: Submit Arrival / Incident Report
 ```
 
+## 🛠️ Tech Stack & Tooling
+
+- **Core Framework**: Flutter (≥ 3.11.0)
+- **State Management & Routing**: `GetX` (^4.6.6) - For reactive state injection and rapid navigation.
+- **Networking**: `Dio` (^5.7.0) - Powerful HTTP client with interceptors for seamless token injection.
+- **Hardware Integrations**: 
+  - `mobile_scanner` (^5.2.3)
+  - `image_picker` (^1.1.2)
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Flutter SDK installed (Targeting Android minSdk 21).
+- Active S2SMFG Driver Account.
+- Network access to the S2SMFG production API environment.
+
+### Installation & Build
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/IT-MadaWikriPSG/Driver-S2SMFG.git
+   cd flutter-driverapp-s2smfg
+   ```
+
+2. **Fetch Dependencies**
+   ```bash
+   flutter pub get
+   ```
+
+3. **Build the Application**
+   ```bash
+   # Build a debug APK for emulator/local testing
+   flutter build apk --debug
+
+   # Build a highly optimized release APK for distribution
+   flutter build apk --release
+   ```
+   *The compiled binary will be generated at `build/app/outputs/flutter-apk/app-release.apk`.*
+
+## ⚙️ Configuration
+
+The application communicates with the backend via predefined REST endpoints. Core network settings are centralized in `lib/app/constants/api_constants.dart`.
+
+Ensure the `BASE_URL` points to the correct environment (e.g., `https://s2smfg.biz.id/api`) before compiling the release build.
+
+## 🔗 Related Ecosystem
+
+This application is an integral node of the S2SMFG ecosystem:
+- **Core Platform (Backend)**: [ardyansyahp/s2smfg](https://github.com/ardyansyahp/s2smfg)
+- **Factory Floor App**: [ardyansyahp/flutter-webview-s2smfg](https://github.com/ardyansyahp/flutter-webview-s2smfg)
+
 ---
-
-## Cara Build (Android)
-
-```bash
-# 1. Install dependencies
-flutter pub get
-
-# 2. Build APK (debug)
-flutter build apk --debug
-
-# 3. Build APK (release)
-flutter build apk --release
-
-# APK output: build/app/outputs/flutter-apk/app-release.apk
-```
-
----
-
-## Konfigurasi API
-
-Base URL dan endpoint API dikonfigurasi di [`lib/app/constants/api_constants.dart`](lib/app/constants/api_constants.dart).
-
----
-
-## Hubungan dengan Repo Lain
-
-- **Backend/Web**: [ardyansyahp/s2smfg](https://github.com/ardyansyahp/s2smfg) — Laravel application (server-side & API)
-- **WebView App**: [ardyansyahp/flutter-webview-s2smfg](https://github.com/ardyansyahp/flutter-webview-s2smfg) — Aplikasi manufacturing tablet terpisah
+<div align="center">
+  <sub>Built with ❤️ by the IT Mada Wikri Engineering Team.</sub>
+</div>
