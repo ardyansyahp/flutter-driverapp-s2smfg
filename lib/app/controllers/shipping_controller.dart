@@ -20,8 +20,7 @@ class ShippingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchPlans();
-    fetchActiveTrip();
+    // Fetch data via AuthController after login
   }
 
   @override

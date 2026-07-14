@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import '../services/auth_service.dart';
 import '../models/user_model.dart';
 import '../routes/app_routes.dart';
+import 'shipping_controller.dart';
+import 'delivery_controller.dart';
 
 class AuthController extends GetxController {
   final AuthService _authService = AuthService();
@@ -20,8 +22,19 @@ class AuthController extends GetxController {
   Future<void> _checkAuth() async {
     if (await _authService.isLoggedIn()) {
       user.value = await _authService.getUser();
-      Get.offAllNamed(AppRoutes.planList);
+      _goToDashboard();
     }
+  }
+
+  void _goToDashboard() {
+    final shippingCtrl = Get.find<ShippingController>();
+    final deliveryCtrl = Get.find<DeliveryController>();
+    
+    shippingCtrl.fetchPlans();
+    shippingCtrl.fetchActiveTrip();
+    deliveryCtrl.fetchDeliveries();
+    
+    Get.offAllNamed(AppRoutes.planList);
   }
 
   Future<void> login(String userId, {String? password}) async {
@@ -31,7 +44,7 @@ class AuthController extends GetxController {
       final result = await _authService.login(userId, password: password);
       if (result['success'] == true) {
         user.value = UserModel.fromJson(result['user']);
-        Get.offAllNamed(AppRoutes.planList);
+        _goToDashboard();
       } else {
         errorMessage.value = result['message'] ?? 'Login gagal.';
       }
@@ -51,7 +64,7 @@ class AuthController extends GetxController {
       final result = await _authService.loginByQr(qrCode);
       if (result['success'] == true) {
         user.value = UserModel.fromJson(result['user']);
-        Get.offAllNamed(AppRoutes.planList);
+        _goToDashboard();
       } else {
         errorMessage.value = result['message'] ?? 'Login QR gagal.';
       }

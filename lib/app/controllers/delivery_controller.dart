@@ -20,7 +20,7 @@ class DeliveryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchDeliveries();
+    // Fetch data via AuthController after login
   }
 
   Future<void> fetchDeliveries() async {
