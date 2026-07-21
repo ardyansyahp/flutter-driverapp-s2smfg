@@ -1,5 +1,5 @@
 class ApiConstants {
-  static const String baseUrl = 'https://s2smfg.biz.id';
+  static const String baseUrl = 'https://s2smfg.madawikri.co.id';
 
   // Auth
   static const String login = '/api/auth/login';

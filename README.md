@@ -82,7 +82,7 @@ sequenceDiagram
 
 The application communicates with the backend via predefined REST endpoints. Core network settings are centralized in `lib/app/constants/api_constants.dart`.
 
-Ensure the `BASE_URL` points to the correct environment (e.g., `https://s2smfg.biz.id/api`) before compiling the release build.
+Ensure the `BASE_URL` points to the correct environment (e.g., `https://s2smfg.madawikri.co.id/api`) before compiling the release build.
 
 ## 🔗 Related Ecosystem
 
